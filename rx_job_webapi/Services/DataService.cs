@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using rx_job_webapi.Interfaces;
 
@@ -18,24 +19,24 @@ namespace rx_job_webapi.Services
             _rxJobDbContext = new RxJobDbContext();
             _dbSet = _rxJobDbContext.Set<T>();
         }
-        public void Add(T item)
+        public async Task Add(T item)
         {
-            _dbSet.Add(item);
+            await _dbSet.AddAsync(item);
         }
 
-        public IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
+        public async Task<IEnumerable<T>> Find(Expression<Func<T, bool>> predicate)
         {
-            return _dbSet.Where(predicate);
+            return await _dbSet.Where(predicate).ToListAsync();
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
-            return _dbSet.ToList();
+            return await _dbSet.ToListAsync();
         }
 
-        public T GetSingle(Expression<Func<T, bool>> predicate)
+        public async Task<T> GetSingle(Expression<Func<T, bool>> predicate)
         {
-            return _dbSet.SingleOrDefault(predicate);
+            return await _dbSet.SingleOrDefaultAsync(predicate);
         }
     }
 }

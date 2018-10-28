@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace rx_job_webapi.Interfaces
 {
     public interface IDataService<T>
     {
-        IEnumerable<T> GetAll();
-        void Add(T item);
-        T GetSingle(Expression<Func<T, bool>> predicate);
-        IEnumerable<T> Find(Expression<Func<T, bool>> predicate);
+        Task<IEnumerable<T>> GetAll();
+        Task Add(T item);
+        Task<T> GetSingle(Expression<Func<T, bool>> predicate);
+        Task<IEnumerable<T>> Find(Expression<Func<T, bool>> predicate);
     }
 }
