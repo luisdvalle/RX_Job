@@ -19,7 +19,5 @@ namespace rx_job_webapi.Models
         public int? StatusNum { get; set; }
         public string RoomType { get; set; }
         public int? RJobID { get; set; }
-
-        
     }
 }
