@@ -8,35 +8,32 @@ using rx_job_webapi.Interfaces;
 
 namespace rx_job_webapi.Services
 {
-    public class DataService<T> : IDataService<T> where T : class
+    public class DataRepository<T> : IDataRepository<T> where T : class
     {
-        private RxJobDbContext _rxJobDbContext;
-        private DbSet<T> _dbSet;
+        protected DbContext _dbContext;
 
-        public DataService()
+        public DataRepository(DbContext dbContext)
         {
-            var map = new HashSet<int>();
-            _rxJobDbContext = new RxJobDbContext();
-            _dbSet = _rxJobDbContext.Set<T>();
+            _dbContext = dbContext;
         }
         public async Task Add(T item)
         {
-            await _dbSet.AddAsync(item);
+            await _dbContext.Set<T>().AddAsync(item);
         }
 
         public async Task<IEnumerable<T>> Find(Expression<Func<T, bool>> predicate)
         {
-            return await _dbSet.Where(predicate).ToListAsync();
+            return await _dbContext.Set<T>().Where(predicate).ToListAsync();
         }
 
         public async Task<IEnumerable<T>> GetAll()
         {
-            return await _dbSet.ToListAsync();
+            return await _dbContext.Set<T>().ToListAsync();
         }
 
         public async Task<T> GetSingle(Expression<Func<T, bool>> predicate)
         {
-            return await _dbSet.SingleOrDefaultAsync(predicate);
+            return await _dbContext.Set<T>().SingleOrDefaultAsync(predicate);
         }
     }
 }

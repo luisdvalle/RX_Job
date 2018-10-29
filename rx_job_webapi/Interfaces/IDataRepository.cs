@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace rx_job_webapi.Interfaces
 {
-    public interface IDataService<T>
+    public interface IDataRepository<T> where T : class
     {
         Task<IEnumerable<T>> GetAll();
         Task Add(T item);
