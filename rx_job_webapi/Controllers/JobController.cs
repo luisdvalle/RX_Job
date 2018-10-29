@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using rx_job_webapi.Interfaces;
 using rx_job_webapi.Models;
+using rx_job_webapi.ViewModels;
 
 namespace rx_job_webapi.Controllers
 {
@@ -13,17 +11,30 @@ namespace rx_job_webapi.Controllers
     [ApiController]
     public class JobController : ControllerBase
     {
-        private readonly IDataService<RX_Job> _jobDataService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public JobController(IDataService<RX_Job> jobDataService)
+        public JobController(IUnitOfWork unitOfWork)
         {
-            _jobDataService = jobDataService;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet("All")]
         public async Task<IActionResult> GetAllJobs()
         {
-            return Ok(await _jobDataService.GetAll());
+            var jobsList = await _unitOfWork.Jobs.GetAll();
+
+            return Ok(jobsList.Select(
+                j => new JobViewModel
+                {
+                    JobID = j.JobID, Floor = j.Floor, Name = j.Name, RoomType = j.RoomType, Status = j.Status
+                })
+            );
         }
+
+        //[HttpPost("Update")]
+        //public async Task<IActionResult> UpdateJob([FromBody] int jobID, [FromBody] string status)
+        //{
+
+        //}
     }
 }
