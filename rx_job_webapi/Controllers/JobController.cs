@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using rx_job_webapi.Interfaces;
@@ -18,7 +19,7 @@ namespace rx_job_webapi.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [HttpGet("All")]
+        [HttpGet("all")]
         public async Task<IActionResult> GetAllJobs()
         {
             var jobsList = await _unitOfWork.Jobs.GetAll();
@@ -31,10 +32,24 @@ namespace rx_job_webapi.Controllers
             );
         }
 
-        //[HttpPost("Update")]
-        //public async Task<IActionResult> UpdateJob([FromBody] int jobID, [FromBody] string status)
-        //{
+        [HttpPost("update/{jobID}")]
+        public async Task<IActionResult> UpdateJob([FromRoute] int jobID, [FromBody] string status)
+        {
+            var job = await _unitOfWork.Jobs.GetSingle(j => j.JobID == jobID);
 
-        //}
+            if (job == null)
+                return BadRequest("Invalid request. Job does not exist in the DB");
+
+            job.Status = status;
+            if (string.Equals(status, "Complete"))
+            {
+                job.DateCompleted = DateTime.UtcNow;
+            }
+
+            await _unitOfWork.Complete();
+            _unitOfWork.Dispose();
+
+            return Ok();
+        }
     }
 }
