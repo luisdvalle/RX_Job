@@ -1,5 +1,4 @@
 ﻿using rx_job_webapi.Interfaces;
-using rx_job_webapi.Models;
 using System.Threading.Tasks;
 
 namespace rx_job_webapi.Services

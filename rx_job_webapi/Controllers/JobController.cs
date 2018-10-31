@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using rx_job_webapi.Interfaces;
-using rx_job_webapi.Models;
 using rx_job_webapi.ViewModels;
 
 namespace rx_job_webapi.Controllers
@@ -49,7 +48,7 @@ namespace rx_job_webapi.Controllers
             await _unitOfWork.Complete();
             _unitOfWork.Dispose();
 
-            return Ok();
+            return Ok(true);
         }
     }
 }

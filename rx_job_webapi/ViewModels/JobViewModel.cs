@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace rx_job_webapi.ViewModels
+﻿namespace rx_job_webapi.ViewModels
 {
     public class JobViewModel
     {
