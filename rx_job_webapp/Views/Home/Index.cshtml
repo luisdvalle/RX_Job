@@ -1,0 +1,54 @@
+﻿@model JobViewModel
+
+<hr class="featurette-divider">
+
+<div class="container">
+
+    <h2>Company's Jobs</h2>
+    <br />
+    <br />
+    <p>Total Jobs: @Model.Count</p>
+    <br />
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Job Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Floor</th>
+                <th scope="col">Status</th>
+                <th scope="col">Room Type</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var job in Model.Jobs)
+            {
+            <tr class="row_rx_job">
+                <td scope="row">@job.JobID</td>
+                <td>@job.Name</td>
+                <td>@job.Floor</td>
+                <td class="status_rx_job">@job.Status</td>
+                <td>@job.RoomType</td>
+                @if (job.Status != "Complete")
+                {
+                    <td>
+                        <form asp-action="Complete" asp-controller="Home" method="Post">
+                            <input type="hidden" name="jobId" value="@job.JobID" />
+                            <button type="submit">Mark as complete</button>
+                        </form>
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
+            </tr>
+            }
+        </tbody>
+    </table>
+<br />
+</div>
+<br />
+
+
